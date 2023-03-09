@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OccupancyController;
+use App\Http\Controllers\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/daily-occupancy-rates/{date}', [OccupancyController::class, 'daily'])
+    ->where('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}');;
+Route::get('/monthly-occupancy-rates/{date}', [OccupancyController::class, 'monthly'])
+    ->where('date', '[0-9]{4}-[0-9]{2}');;
+
+Route::post('/booking', [BookingController::class, 'store']);
+Route::put('/booking/{booking}', [BookingController::class, 'update']);
+
+
