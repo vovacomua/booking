@@ -22,6 +22,8 @@ class Booking extends Model
         'ends_at',
     ];
 
+    public $timestamps = false;
+
     /**
      * Belongs To Room
      */

@@ -24,7 +24,7 @@ class OccupancyRatesRequest extends FormRequest
     public function rules()
     {
         return [
-            'product_ids' => 'required|array',
+            'product_ids' => 'array',
             'room_ids' => 'array',
             'room_ids.*' => 'exists:rooms,id',
         ];

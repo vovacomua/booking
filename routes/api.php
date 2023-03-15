@@ -17,9 +17,9 @@ use App\Http\Controllers\BookingController;
 */
 
 Route::get('/daily-occupancy-rates/{date}', [OccupancyController::class, 'daily'])
-    ->where('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}');;
+    ->where('date', '^[0-9]{4}-[0-9]{2}-[0-9]{2}$');
 Route::get('/monthly-occupancy-rates/{date}', [OccupancyController::class, 'monthly'])
-    ->where('date', '[0-9]{4}-[0-9]{2}');;
+    ->where('date', '^[0-9]{4}-[0-9]{2}$');
 
 Route::post('/booking', [BookingController::class, 'store']);
 Route::put('/booking/{booking}', [BookingController::class, 'update']);

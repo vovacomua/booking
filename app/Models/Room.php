@@ -19,6 +19,8 @@ class Room extends Model
         'capacity',
     ];
 
+    public $timestamps = false;
+
     /**
      * Has Many Bookings
      */

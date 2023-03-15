@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OccupancyRatesRequest;
-use App\Models\Block;
-use App\Models\Booking;
-use App\Models\Room;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use App\Services\OccupancyService;
 
 class OccupancyController extends Controller
@@ -24,20 +20,40 @@ class OccupancyController extends Controller
      */
     public function daily(OccupancyRatesRequest $request, $date)
     {
-        //set SQL DATE format
-        $date = \DateTime::createFromFormat('Y-m-d', $date);
-        $date = $date->format('Y-m-d');
+        $validator = Validator::make(['date' => $date], [
+            'date' => 'required|date_format:Y-m-d',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid date format.'], 422);
+        }
 
         return response()->json([
-            'occupancy_rate' => $this->occupancyService->occupancyRate($date)
+            'occupancy_rate' => $this->occupancyService->occupancyRateDaily(
+                $date,
+                $request->input('room_ids', null)
+            )
         ]);
     }
 
     /**
      * Get monthly occupancy.
      */
-    public function monthly(OccupancyRatesRequest $request)
+    public function monthly(OccupancyRatesRequest $request,  $date)
     {
-        //
+        $validator = Validator::make(['date' => $date], [
+            'date' => 'required|date_format:Y-m',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => 'Invalid date format.'], 422);
+        }
+
+        return response()->json([
+            'occupancy_rate' => $this->occupancyService->occupancyRateMonthly(
+                $date,
+                $request->input('room_ids', null)
+            )
+        ]);
     }
 }
